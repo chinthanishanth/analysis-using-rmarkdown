@@ -1,0 +1,117 @@
+---
+title: "Net hourly wages across multiple countries Mc Donald's"
+author: "Nishanth"
+date: "`r format(Sys.time(), '%d %B, %Y, %H:%M')`"
+output:
+  html_document:
+    number_sections: true
+    toc: true
+    toc_depth: 4
+    code_folding: hide
+    theme: cosmo
+    highlight: tango
+    
+knit: (function(inputFile, encoding) { 
+      out_dir <- 'html_pdf_files/linear_regression';
+      rmarkdown::render(inputFile,
+                        encoding=encoding, 
+                        output_file=file.path(dirname(inputFile), out_dir, 'Linear_regression.html')) })
+    
+
+---
+
+
+# Importing data into R
+
+## Viewing top rows in CSV
+```{r}
+data <- read.csv("data/BigMac-NetHourlyWage.csv")
+
+head(data,5)
+```
+
+
+## viewing the structure of the dataset 
+
+```{r}
+str(data)
+```
+
+## Basic Summary stats of dataset
+
+```{r}
+summary(data)
+```
+
+## seperating numerical and categorical variables from the dataset
+```{r}
+variable_types <- sapply(data, is.factor) 
+numerical_data <- data[,!(variable_types)]
+categorical_data <- data[,(variable_types)]
+
+```
+
+
+# Grapical representaion of the data
+
+## scatter plot for net hourly wages and Big Mac price
+
+
+```{r,message = F}
+library(plotly)
+p <- plot_ly(data = numerical_data, x = ~ Big.Mac.Price...., y = ~Net.Hourly.Wage....)
+p
+```
+
+As price of the BIg Mac increases net hourly wages are also increases, there is a postive relationship between Big Mac prices and Net hourly wages
+
+## Box plot for Outlier analysis
+
+```{r}
+p <- plot_ly(type = "box") %>%
+  add_boxplot(y = numerical_data$Big.Mac.Price.... , name = "Big Mac price")  %>%
+  add_boxplot(y = numerical_data$Net.Hourly.Wage.... , name = "Net hourly wage") 
+p
+```
+
+we see couple of outliers in the data for Big Mac 
+
+# preprocessing
+## extracting the outlier points, rows and removing them
+```{r}
+outlier_points <- sapply(numerical_data, function(x) boxplot(x,plot=FALSE)$out)
+outlier_points
+outlier_rows<- which(data$Big.Mac.Price....%in% outlier_points$Big.Mac.Price....)
+outlier_rows
+data_cleaned <- data[-c(outlier_rows),]
+```
+
+There are couple of outliers in Big Mac price and no outliers in net hourly wages
+
+## correlation between BIg Mac and Net Hourly Wage
+```{r}
+cor(x = data$Big.Mac.Price....,y = data$Net.Hourly.Wage....)
+```
+
+correlation between BIg Mac and Net Hourly wage is strong and postively correlated
+
+# Building the regression model
+## applying linear regression to the Mac Donald's data
+```{r}
+model.lm <- lm(Net.Hourly.Wage.... ~ Big.Mac.Price.... ,data = data_cleaned)
+summary(model.lm)
+```
+
+
+## viewing diagnostic plots of linear regression
+```{r}
+par(mfrow=c(2,2))
+plot(model.lm)
+```
+
+
+
+
+
+
+

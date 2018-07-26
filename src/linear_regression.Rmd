@@ -65,7 +65,7 @@ p
 
 As price of the BIg Mac increases net hourly wages are also increases, there is a postive relationship between Big Mac prices and Net hourly wages
 
-## Box plot for Outlier analysis
+## Univariate (Box plot) analysis for Outlier analysis
 
 ```{r}
 p <- plot_ly(type = "box") %>%
@@ -110,8 +110,44 @@ plot(model.lm)
 ```
 
 
+## Multivariate model approach for outliers (using cook's distance) and removal of outliers
+
+### Cooks Distance
+
+Cook’s distance is a measure computed with respect to a given regression model and therefore is impacted only by the X variables included in the model. But, what does cook’s distance mean? It computes the influence exerted by each data point (row) on the predicted outcome.
+
+The cook’s distance for each observation i measures the change in Ŷ  (fitted Y) for all observations with and without the presence of observation i, so we know how much the observation i impacted the fitted values. Mathematically, cook’s distance Di for observation i is computed as
+
+```{r pressure, echo=FALSE, fig.cap="Cook's distance formula", out.width = '50%'}
+knitr::include_graphics("data/cooksd_formula.png")
+```
+
+where,
+<br />
+Ŷ j is the value of jth fitted response when all the observations are included.
+<br />
+Ŷ j(i) is the value of jth fitted response, where the fit does not include observation i.
+<br />
+MSE is the mean squared error.
+<br />
+p is the number of coefficients in the regression model
+
+```{r}
+cooks.dist<- cooks.distance(model.lm)
+plot(cooks.dist, pch="*", cex=2, main="Influential Obs. by Cooks distance",xlab = "observations",ylab = "cook's distance")
+abline(h = 4*mean(cooks.dist, na.rm=T), col="red")
+text(x=1:length(cooks.dist)+1, y=cooks.dist, labels=ifelse(cooks.dist>4*mean(cooks.dist, na.rm=T),names(cooks.dist),""), col="red")
+data_cleaned <- data_cleaned[-c(3),]
+```
 
 
+## Again applying linear regression after removal of outliers
 
+```{r}
+model.lm2 <- lm(Net.Hourly.Wage.... ~ Big.Mac.Price.... ,data = data_cleaned)
+summary(model.lm2)
+```
+
+After removal of outliers we observe p value for big mac price is more significant,adjusted R-squared increased from 36.9 to 55.2 and Multiple R squared increased from 39.5 to 57.1, overall model significance F test p - value becomes more significant.
 
 

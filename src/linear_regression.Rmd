@@ -12,7 +12,7 @@ output:
     highlight: tango
     
 knit: (function(inputFile, encoding) { 
-      out_dir <- 'html_pdf_files/linear_regression';
+      out_dir <- 'output/linear_regression';
       rmarkdown::render(inputFile,
                         encoding=encoding, 
                         output_file=file.path(dirname(inputFile), out_dir, 'Linear_regression.html')) })
@@ -108,11 +108,10 @@ summary(model.lm)
 par(mfrow=c(2,2))
 plot(model.lm)
 ```
+we can observe there is little bit of upword treand in residuals of linear regression model(heteroscedasticity) in 3rd diagnostic graph   
 
-
-## Multivariate model approach for outliers (using cook's distance) and removal of outliers
-
-### Cooks Distance
+## reengineering model 
+### Multivariate model approach for outliers (using cook's distance) and removal of outliers
 
 Cook’s distance is a measure computed with respect to a given regression model and therefore is impacted only by the X variables included in the model. But, what does cook’s distance mean? It computes the influence exerted by each data point (row) on the predicted outcome.
 
@@ -150,4 +149,10 @@ summary(model.lm2)
 
 After removal of outliers we observe p value for big mac price is more significant,adjusted R-squared increased from 36.9 to 55.2 and Multiple R squared increased from 39.5 to 57.1, overall model significance F test p - value becomes more significant.
 
+## viewing diagnostic plots of linear regression
+```{r}
+par(mfrow=c(2,2))
+plot(model.lm2)
+```
 
+Now we observe there is no upword treand in residuals (heteroscedasticity) in 3rd diagnostic graph

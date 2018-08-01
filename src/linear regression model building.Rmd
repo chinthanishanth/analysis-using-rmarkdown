@@ -1,0 +1,22 @@
+---
+title: "Model building using linear regression"
+author: "Nishanth"
+date: "`r format(Sys.time(), '%d %B, %Y, %H:%M')`"
+output:
+  html_document:
+    number_sections: true
+    toc: true
+    toc_depth: 4
+    code_folding: hide
+    theme: cosmo
+    highlight: tango
+    
+knit: (function(inputFile, encoding) { 
+      out_dir <- 'output/linear_regression';
+      rmarkdown::render(inputFile,
+                        encoding=encoding, 
+                        output_file=file.path(dirname(inputFile), out_dir, 'Model_building_using_Linear_regression.html')) })
+    
+
+---
+

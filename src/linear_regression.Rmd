@@ -1,5 +1,5 @@
 ---
-title: "Net hourly wages across multiple countries Mc Donald's"
+title: "Effect of ouliers in model building"
 author: "Nishanth"
 date: "`r format(Sys.time(), '%d %B, %Y, %H:%M')`"
 output:
@@ -15,15 +15,16 @@ knit: (function(inputFile, encoding) {
       out_dir <- 'output/linear_regression';
       rmarkdown::render(inputFile,
                         encoding=encoding, 
-                        output_file=file.path(dirname(inputFile), out_dir, 'Linear_regression.html')) })
+                        output_file=file.path(dirname(inputFile), out_dir, 'Effect_of_outliers_on_Linear_regression.html')) })
     
 
 ---
 
+# Dataset of Net hourly wages across multiple countries Mc Donald’s 
 
-# Importing data into R
+## Importing data into R
 
-## Viewing top rows in CSV
+### Viewing top rows in CSV
 ```{r}
 data <- read.csv("data/BigMac-NetHourlyWage.csv")
 

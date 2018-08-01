@@ -155,4 +155,6 @@ par(mfrow=c(2,2))
 plot(model.lm2)
 ```
 
-Now we observe there is no upword treand in residuals (heteroscedasticity) in 3rd diagnostic graph.
+Now we observe there is no upword trend in residuals (heteroscedasticity) in 3rd diagnostic graph.
+
+
